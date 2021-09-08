@@ -66,3 +66,26 @@ h1, p {
 .hide {
   display: none;
 }
+a:link {
+  color: #f43965;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:visited {
+  color: rgb(88, 0, 0);
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color: red;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+a:active {
+  color: rgb(160, 162, 241);
+  background-color: transparent;
+  text-decoration: underline;
+}
