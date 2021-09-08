@@ -1,5 +1,5 @@
 $("html").on("click", function () {
-  document.getElementById("demo").innerHTML = "you > everything";
+  document.getElementById("demo").innerHTML = "bby > everything";
   $(this).toggleClass("on");
 });
 setTimeout(function () {
