@@ -1,134 +1,84 @@
-class App {
- 
- 
- 	select = e => document.querySelector(e);
-	selectAll = e => document.querySelectorAll(e); 
-	mainTl = gsap.timeline();
-	heartFill = this.select('.heartFill');
-	maxDrag = 705;
-	heartFillMaxPosY = -50;
-	draggerProp = gsap.getProperty('.dragger');
-	trackTween = null;
- 
-  constructor(){
-		
-		let followerVX = 0;
-		let liquidFollowerY = 0;
-		let followerProp = gsap.getProperty('.follower');
-		gsap.set('.heartFill', {
-		 transformOrigin:'50% 0%'
-		})      
-		this.myDragger = Draggable.create('.dragger', {
-			type:'x',
-			bounds:{minX:0, maxX:this.maxDrag, minY:0, maxY:0},
-			onDrag:this.onDrag,
-			onPress: (e) => {
-				gsap.to('.heartChat', {
-					duration: 0.1,
-					scale: 0.98
-				})
-			},
-			onRelease: (e) => {
-				gsap.to('.heartChat', {
-					duration: 0.6,
-					scale: 1,
-					ease: 'elastic(0.93, 0.35)'
-				})
-			},
-			onThrowUpdate:this.onDrag,
-			inertia:true,
-			callbackScope: this,
-			overshootTolerance:0,
-			throwResistance: 8000
-		})   
-    
-			gsap.set('.heartChat', {
-				x: -18,
-				y: 235,
-				transformOrigin:'50% 105%'
-			})   		
- 		
-   gsap.to('.follower', {
-    x:'+=0',
-    repeat:-1,
-    modifiers:{
-     x: gsap.utils.unitize((x) => {   
-      followerVX += (this.draggerProp('x') - followerProp('x')) * 0.08;
-      liquidFollowerY += (this.draggerProp('x') - followerProp('x')) * 0.98;
-      followerVX *= 0.79;
-      liquidFollowerY *= 0.4;
-      return followerProp('x') + followerVX;    
-     })
-    }
-   })   
-   gsap.to('.liquidFollower', 31, {
-    x:'+=0',
-    repeat:-1,
-    modifiers:{
-     x: (x) => {   
-      liquidFollowerY += (this.draggerProp('x') - gsap.getProperty('.liquidFollower', 'x')) * 0.98;
-      liquidFollowerY *= 0.54;
-      return  followerProp('x') + liquidFollowerY ;    
-     }
-    }
-   })   
-   
-   gsap.to('.heartChat', {
-    rotation:'+=0',
-    repeat:-1,
-    ease: 'linear',
-    modifiers:{
-     rotation: gsap.utils.unitize((rotation) => {
-      let val = rotation+followerVX*0.595
-       return -val;
-     })
-    }
-   })
-   gsap.to('.heartFill', {
-    rotation:'+=0',
-    repeat:-1,
-    ease: 'linear',
-    modifiers: {
-     rotation: gsap.utils.unitize((rotation) => {
-      let val = rotation+liquidFollowerY*0.5;
-       return (val)
-     })
-    }
-   })
-   
-   this.onDrag();
+var theCount;
+var alarm = document.getElementById("alarm");
+var panel = document.getElementById("panel");
+var turnOff = document.getElementById("turn-off");
+var turnOffHor = document.getElementById("closing");
+var detonate = document.getElementById("detonate");
+alarm.volume = 0.25; //volume level
 
-  }
- 
-onDrag(){
-    //console.log(this.particlePool)
-		let posX = this.draggerProp('x');
-		let progress = posX / this.maxDrag;
-		gsap.to('.heartChat', 0.1, {
-			x: posX - 18
-		})   
-    let percent = progress * 100;
-    let percentY = progress * this.heartFillMaxPosY;
-   //console.log(`0% ${percent}%`)
-		this.trackTween = gsap.to('.track',  {
-		drawSVG: `100% ${percent}%`,
-		ease: 'elastic(0.4, 0.16)'
-		})
-		gsap.to('.heartFill', {
-		 duration: 0.1,
-		 y: percentY
-		})
-   
-   if(progress == 1){    
-    //you reached the end
-   }
-  }  
-
+var time = document.getElementById("time");
+function showCountDown() {
+	time.innerText = time.innerText - 1;
+	if (time.innerText == 0) {
+		clearInterval(theCount);
+		time.classList.add("crono");
+		abort.classList.add("hide");
+		detonate.classList.add("show");
+		setTimeout(function () {
+			turnOff.classList.add("close");
+			turnOffHor.classList.add("close");
+			reload.classList.add("show");
+			alarm.pause();
+		}, 1500);
+	}
 }
 
+var cover = document.getElementById("cover");
+cover.addEventListener("click", function () {
+	if (this.className == "box") this.classList.add("opened");
+	else this.classList.remove("opened");
+});
 
-gsap.set('#loveSliderSVG', {
-  visibility: 'visible'
-})
+var btn = document.getElementById("activate");
+activate.addEventListener("click", function () {
+	this.classList.add("pushed");
+	alarm.load();
+	alarm.currentTime = 10.1;
+	alarm.play();
+	setTimeout(function () {
+		panel.classList.add("show");
+		theCount = setInterval(showCountDown, 1000);
+		alarm.load();
+		alarm.play();
+	}, 500);
+});
 
-new App();
+var abort = document.getElementById("abort");
+abort.addEventListener("click", function () {
+	btn.classList.remove("pushed");
+	panel.classList.remove("show");
+	clearInterval(theCount);
+	time.innerText = 9;
+	alarm.pause();
+	alarm.currentTime = 10;
+	alarm.play();
+});
+
+var reload = document.getElementById("restart");
+reload.addEventListener("click", function () {
+	panel.classList.remove("show");
+	turnOff.classList.remove("close");
+	turnOffHor.classList.remove("close");
+	abort.classList.remove("hide");
+	detonate.classList.remove("show");
+	cover.classList.remove("opened");
+	btn.classList.remove("pushed");
+	this.classList.remove("show");
+	time.classList.remove("crono");
+	time.innerText = 9;
+});
+
+setTimeout(function () {
+	cover.classList.remove("opened");
+}, 100);
+
+var mute = document.getElementById("mute");
+mute.addEventListener("click", function () {
+	if (this.className == "muted") {
+		alarm.muted = false;
+		this.classList.remove("muted");
+	} else {
+		alarm.muted = true;
+		this.classList.add("muted");
+	}
+});
