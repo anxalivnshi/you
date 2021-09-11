@@ -15,7 +15,7 @@ if (index < message.length) {
 
 $(function () {
 
-showText("#target1", "-by Paul Newman Mekala", 0, 200);   
+showText("#target1", "-by ihbagsh karen karenovskii", 0, 200);   
 
 });
 
