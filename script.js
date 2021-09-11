@@ -1,84 +1,66 @@
-var theCount;
-var alarm = document.getElementById("alarm");
-var panel = document.getElementById("panel");
-var turnOff = document.getElementById("turn-off");
-var turnOffHor = document.getElementById("closing");
-var detonate = document.getElementById("detonate");
-alarm.volume = 0.25; //volume level
+//Problem: No user interacyion causes no change to application
+//Solution: User interaction causes changes appropriately
 
-var time = document.getElementById("time");
-function showCountDown() {
-	time.innerText = time.innerText - 1;
-	if (time.innerText == 0) {
-		clearInterval(theCount);
-		time.classList.add("crono");
-		abort.classList.add("hide");
-		detonate.classList.add("show");
-		setTimeout(function () {
-			turnOff.classList.add("close");
-			turnOffHor.classList.add("close");
-			reload.classList.add("show");
-			alarm.pause();
-		}, 1500);
-	}
+var color = $(".selected").css("background-color");
+var $canvas = $("canvas");
+var context = $canvas[0].getContext("2d");
+var lastEvent;
+var mouseDown = false;
+
+//When clicking on control list items
+$(".controls").on("click", "li", function() {
+  //Deselect sibling elements
+  $(this).siblings().removeClass("selected");
+  //Select clicked element
+  $(this).addClass("selected");
+  //cache current color
+  color = $(this).css("background-color");
+});
+
+//When "New Color" is pressed
+$("#revealColorSelect").click(function() {
+  //Show color select or hide the color select
+  changeColor();
+  $("#colorSelect").toggle();
+});
+
+//update the new color span
+function changeColor() {
+  var r = $("#red").val();
+  var g = $("#green").val();
+  var b = $("#blue").val();
+  $("#newColor").css("background-color", "rgb(" + r + "," + g + ", " + b + ")");
 }
 
-var cover = document.getElementById("cover");
-cover.addEventListener("click", function () {
-	if (this.className == "box") this.classList.add("opened");
-	else this.classList.remove("opened");
+//When color sliders change
+$("input[type=range]").change(changeColor);
+
+//When "Add Color" is pressed
+$("#addNewColor").click(function() {
+  //Append the color to the controls ul
+  var $newColor = $("<li></li>");
+  $newColor.css("background-color", $("#newColor").css("background-color"));
+  $(".controls ul").append($newColor);
+  //Select the new color
+  $newColor.click();
 });
 
-var btn = document.getElementById("activate");
-activate.addEventListener("click", function () {
-	this.classList.add("pushed");
-	alarm.load();
-	alarm.currentTime = 10.1;
-	alarm.play();
-	setTimeout(function () {
-		panel.classList.add("show");
-		theCount = setInterval(showCountDown, 1000);
-		alarm.load();
-		alarm.play();
-	}, 500);
-});
-
-var abort = document.getElementById("abort");
-abort.addEventListener("click", function () {
-	btn.classList.remove("pushed");
-	panel.classList.remove("show");
-	clearInterval(theCount);
-	time.innerText = 9;
-	alarm.pause();
-	alarm.currentTime = 10;
-	alarm.play();
-});
-
-var reload = document.getElementById("restart");
-reload.addEventListener("click", function () {
-	panel.classList.remove("show");
-	turnOff.classList.remove("close");
-	turnOffHor.classList.remove("close");
-	abort.classList.remove("hide");
-	detonate.classList.remove("show");
-	cover.classList.remove("opened");
-	btn.classList.remove("pushed");
-	this.classList.remove("show");
-	time.classList.remove("crono");
-	time.innerText = 9;
-});
-
-setTimeout(function () {
-	cover.classList.remove("opened");
-}, 100);
-
-var mute = document.getElementById("mute");
-mute.addEventListener("click", function () {
-	if (this.className == "muted") {
-		alarm.muted = false;
-		this.classList.remove("muted");
-	} else {
-		alarm.muted = true;
-		this.classList.add("muted");
-	}
+//On mouse events on the canvas
+$canvas.mousedown(function(e) {
+  lastEvent = e;
+  mouseDown = true;
+}).mousemove(function(e) {
+  //Draw lines
+  if (mouseDown) {
+    context.beginPath();
+    context.moveTo(lastEvent.offsetX, lastEvent.offsetY);
+    context.lineTo(e.offsetX, e.offsetY);
+    context.strokeStyle = color;
+    context.stroke();
+    lastEvent = e;
+  }
+}).mouseup(function() {
+  mouseDown = false;
+}).mouseleave(function() {
+  $canvas.mouseup();
 });
