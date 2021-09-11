@@ -2,47 +2,37 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>draw something for me</title>
-  <link rel="stylesheet" href="./style.css">
+  <title>quote machine</title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'><link rel="stylesheet" href="./style.css">
 
 </head>
 <body>
 <!-- partial:index.partial.html -->
 <body>
-  <canvas width="600" height="400"></canvas>
-  <div class="controls">
-    <ul>
-      <li class="red selected"></li>
-      <li class="blue"></li>
-      <li class="yellow"></li>
-    </ul>
-    <button id="revealColorSelect">New Color</button>
-    <div id="colorSelect">
-      <span id="newColor"></span>
-      <div class="sliders">
-        <p>
-          <label for="red">Red</label>
-          <input id="red" name="red" type="range" min=0 max=255 value=0>
-        </p>
-        <p>
-          <label for="green">Green</label>
-          <input id="green" name="green" type="range" min=0 max=255 value=0>
-        </p>
-        <p>
-          <label for="blue">Blue</label>
-          <input id="blue" name="blue" type="range" min=0 max=255 value=0>
-        </p>
-      </div>
-      <div>
-        <button id="addNewColor">Add Color</button>
-      </div>
-    </div>
-  </div>
-
-
+ <div class="text-center  jumbotron o" id="target1">
+  <h1> get a random quote </h1>
+    <p id="rquote"> </p>
+</div>
+<br><br>
+<div class="container text-center jumbotron message " id="target" >
+  <h2   value="hello"><a  id="my">manai hun uurtuu aaimr itgeltei</a></h2><br> <p><a id="para"> - bby  </a></p>
+ 
+ 
+</div>
+<br><br>
+<div class="text-center  ">
+  <button input="submit" value="submit" class="btn btn-primary " id="Message">new quote</button>
+   <br><br>
+</div>
+  
+  
 </body>
 <!-- partial -->
-  <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script><script  src="./script.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js'></script><script  src="./script.js"></script>
 
 </body>
 </html>
