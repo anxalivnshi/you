@@ -1,45 +1,36 @@
-$(document).ready(function() {
-  $("#Message").on("click", function(){
-   $("#target").fadeToggle(500).fadeToggle(500);
-  //  $(".message").html("Here is the message ");
-   
+$(document).ready(function () {
+  $("#Message").on("click", function () {
+    $("#target").fadeToggle(500).fadeToggle(500);
+    //  $(".message").html("Here is the message ");
   });
 });
 
-var showText = function (target, message, index, interval) {   
-if (index < message.length) {
-  $(target).append(message[index++]);
-  setTimeout(function () { showText(target, message, index, interval); }, interval);
-}
-}
+var showText = function (target, message, index, interval) {
+  if (index < message.length) {
+    $(target).append(message[index++]);
+    setTimeout(function () {
+      showText(target, message, index, interval);
+    }, interval);
+  }
+};
 
 $(function () {
-
-showText("#target1", "-by ihbagsh karen karenovskii", 0, 200);   
-
+  showText("#target1", "-by ihbagsh karen karenovskii", 0, 200);
 });
 
-$('button').click(function(){
-randomQuote();
+$("button").click(function () {
+  randomSong();
 });
-function randomQuote() {
-var $target= $("#target");
-var $tweet= $("#tweet"); 
-$.ajax({
-  
-    url: "https://api.forismatic.com/api/1.0/?",
-    dataType: "jsonp",
-    data: "method=getQuote&format=jsonp&lang=en&jsonp=?",
-    success: function( response ) {
-      $target.html("<h4 id='my' class='text-center'>" +
-        response.quoteText + "</h4><p id='para'><br>&dash; " + response.quoteAuthor + "</p> <br>      ");
-      
-      
-    }  
-});
+
+function randomSong() {
+  var $target = $("#target");
+  var item = items[Math.floor(Math.random() * items.length)];
+  $target.html(
+    "<h4 id='my' class='text-center'>" + item + "</h4><p id='para'>"
+  );
 }
- function changeLink(){
-     var textToTweet=$("#my").text()+ ' (' + $("#para").text()+')';
-   var tweetLink = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(textToTweet);
-window.open(tweetLink,'_blank');
- }
+
+var items = Array(
+  "https://www.youtube.com/watch?v=l4UkYBr1NnA&ab_channel=Fredagain..",
+  "https://youtu.be/G04fG-4JcrI"
+);
